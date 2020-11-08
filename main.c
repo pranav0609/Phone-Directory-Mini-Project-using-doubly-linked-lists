@@ -68,6 +68,60 @@ void display(struct stack* ptr) {
         }
     }
 }
+ struct stack* deletebyname(struct stack*ptr,char delname[])
+ {
+   struct stack*temp;
+   temp=head;
+   int flag=0;
+   if(temp==NULL)
+   {
+     printf("Stack is empty");
+   }
+   else{
+   
+   while(temp!=NULL)
+   {
+    if(strcmp(temp->name,delname)==0)
+    {
+     flag=1;
+     break;
+    }
+    else
+    {
+      flag=2;
+    }
+    temp=temp->next;
+   }
+  
+
+    if(flag==1 && temp!=head && temp->next!=NULL)
+    {
+      temp->previous->next=temp->next;
+      temp->next->previous=temp->previous;
+      printf("Your contact has been deleted");
+      
+    }
+    else if(temp==ptr)
+    {
+     temp=temp->next;
+     temp->previous=NULL;
+     head=temp;
+     printf("Your contact has been deleted");
+    }
+    else if(temp->next==NULL)
+    {
+      temp->previous->next=NULL;
+      printf("Your contact has been deleted");
+    }
+    else if(flag==2)
+    {
+      printf("The number you entered is not in the stack");
+    }
+
+   }
+   return head;
+ }
+ 
 
 int main()
 {
@@ -77,8 +131,9 @@ int main()
     int option;
     long long int number;
     char name[20], email[100];
+    char delname[20];
     do {
-        printf("\nenter a choice\n0. exit\n1. add\n2. display\n3. clear screen\n");
+        printf("\nEnter a choice\n0. exit\n1. add\n2. display\n3. clear screen\n4.Delete by name\n");
         scanf("%d", &option);
         switch(option){
     case 0:
@@ -98,6 +153,15 @@ int main()
     case 3:
         system("cls");
         break;
+       
+      case 4:
+      printf("Enter the name to be deleted=");
+      scanf("%s",delname);
+      p=deletebyname(p, delname);
+      break;
+
+
+        
     default:
         printf("enter valid option\n");
 
