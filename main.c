@@ -48,6 +48,16 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
                 }
                 temp = temp->next;
             }
+            int result2 = strcmp(temp->name, ptr->name);
+            if(result2>=0) {
+                    struct stack* temp_prev1 = temp->previous;
+                    ptr->next = temp;
+                    temp_prev1->next = ptr;
+                    ptr->previous = temp_prev1;
+                    temp->previous = ptr;
+                    flag = 1;
+                    return;
+            }
         }
 
         if(flag == 0) {
@@ -55,6 +65,46 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
             ptr->previous = temp;
         }
 }
+
+void searchbyName(char name[]) {
+    struct stack* temp = head;
+    while(temp!=NULL) {
+        int result = strcmp(temp->name, name);
+        if(result == 0) {
+            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("contact not found\n");
+}
+
+void searchbyEmail(char email_id[]) {
+    struct stack* temp = head;
+    while(temp!=NULL) {
+        int result = strcmp(temp->email, email_id);
+        if(result == 0) {
+            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("contact not found\n");
+}
+
+void searchbyNumber(long long int ph_number) {
+    struct stack* temp = head;
+    while(temp!=NULL) {
+
+        if(temp->number == ph_number) {
+            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("contact not found\n");
+}
+
 
 void display(struct stack* ptr) {
     struct stack* temp = head;
@@ -75,7 +125,7 @@ void display(struct stack* ptr) {
    int flag=0;
    if(temp==NULL)
    {
-     printf("Stack is empty");
+     printf("list is empty");
    }
    else{
    
@@ -115,7 +165,7 @@ void display(struct stack* ptr) {
     }
     else if(flag==2)
     {
-      printf("The number you entered is not in the stack");
+      printf("The number you entered is not in the list");
     }
 
    }
@@ -128,16 +178,17 @@ int main()
     struct stack s;
     struct stack *p;
     p = &s;
-    int option;
+    int option, option2;
     long long int number;
     char name[20], email[100];
     char delname[20];
     do {
-        printf("\nEnter a choice\n0. exit\n1. add\n2. display\n3. clear screen\n4.Delete by name\n");
+        printf("\nEnter a choice\n0. exit\n1. add\n2. display\n3. search a contact\n4.Delete by name\n5. clear screen\n");
         scanf("%d", &option);
         switch(option){
     case 0:
         break;
+                
     case 1:
         printf("enter name\n");
         scanf("%s", &name);
@@ -147,11 +198,34 @@ int main()
         scanf("%s", &email);
         addtoStack(p, number, name, email);
         break;
+                
     case 2:
         display(p);
         break;
+                
     case 3:
         system("cls");
+        printf("search by \n1.name\n2.email\n3.number\n");
+        scanf("%d", &option2);
+        if(option2 == 1)
+        {
+            printf("enter name\n");
+            scanf("%s", &name);
+            searchbyName(name);
+        }
+        else if(option2 == 2){
+            printf("enter email\n");
+            scanf("%s", &email);
+            searchbyEmail(email);
+        }
+        else if(option2 == 3) {
+            printf("enter number\n");
+            scanf("%lli", &number);
+            searchbyNumber(number);
+        }
+        else {
+            printf("pls enter valid option\n");
+        }
         break;
        
       case 4:
@@ -159,7 +233,10 @@ int main()
       scanf("%s",delname);
       p=deletebyname(p, delname);
       break;
-
+                
+      case 5:
+        system("cls");
+        break;
 
         
     default:
