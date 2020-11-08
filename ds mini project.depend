@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1604826010 source:d:\c++ problems\ds mini project\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
