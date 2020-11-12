@@ -71,7 +71,7 @@ void searchbyName(char name[]) {
     while(temp!=NULL) {
         int result = strcmp(temp->name, name);
         if(result == 0) {
-            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
             return;
         }
         temp = temp->next;
@@ -84,7 +84,7 @@ void searchbyEmail(char email_id[]) {
     while(temp!=NULL) {
         int result = strcmp(temp->email, email_id);
         if(result == 0) {
-            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
             return;
         }
         temp = temp->next;
@@ -97,12 +97,12 @@ void searchbyNumber(long long int ph_number) {
     while(temp!=NULL) {
 
         if(temp->number == ph_number) {
-            printf("%lli\n%s\n%s\n", temp->number, temp->name, temp->email);
+            printf("Number=%lli\nName=%s\nEmail id=%s\n", temp->number, temp->name, temp->email);
             return;
         }
         temp = temp->next;
     }
-    printf("contact not found\n");
+    printf("Contact not found\n");
 }
 
 
@@ -118,7 +118,7 @@ void display(struct stack* ptr) {
         }
     }
 }
- struct stack* deletebyname(struct stack*ptr,char delname[])
+ struct stack* deletebyname(char delname[])
  {
    struct stack*temp;
    temp=head;
@@ -151,7 +151,7 @@ void display(struct stack* ptr) {
       printf("Your contact has been deleted");
       
     }
-    else if(temp==ptr)
+    else if(temp==head)
     {
      temp=temp->next;
      temp->previous=NULL;
@@ -171,6 +171,128 @@ void display(struct stack* ptr) {
    }
    return head;
  }
+
+  struct stack*delbynumber(long long int delnumber)
+ {
+   struct stack*temp;
+   temp=head;
+   int flag=0;
+   if(temp==NULL)
+   {
+     printf("Contact book is empty");
+    
+   }
+   else{
+   while(temp!=NULL)
+   {
+     if(temp->number==delnumber)
+     {
+       flag=1;
+       break;
+     }
+     else{
+       flag=2;
+
+     }
+     temp=temp->next;
+}
+
+   if(flag==1 && temp!=head && temp->next!=NULL)
+    {
+      temp->previous->next=temp->next;
+      temp->next->previous=temp->previous;
+      printf("Your contact has been deleted");
+    }
+     else if(temp==head)
+    {
+     temp=temp->next;
+     temp->previous=NULL;
+     head=temp;
+     printf("Your contact has been deleted");
+    }
+    else if(temp->next==NULL)
+    {
+      temp->previous->next=NULL;
+      printf("Your contact has been deleted");
+    }
+    else if(temp==head && temp->next==NULL)
+    {
+      temp=NULL;
+      head=temp;
+      printf("Your contact has been deleted");
+    }
+    else if(flag==2)
+    {
+      printf("The number you entered is not in the contact book");
+    }
+   }
+ 
+
+ return head;
+
+ }
+
+  struct stack*delbyemail(char delemail[])
+ {
+   struct stack*temp;
+   temp=head;
+   int flag=0;
+   if(temp==NULL)
+   {
+     printf("Contact book is empty");
+    
+   }
+   else{
+   while(temp!=NULL)
+   {
+     if(strcmp(temp->email,delemail)==0)
+     {
+       flag=1;
+       break;
+     }
+     else{
+       flag=2;
+
+     }
+     temp=temp->next;
+}
+
+   if(flag==1 && temp!=head && temp->next!=NULL)
+    {
+      temp->previous->next=temp->next;
+      temp->next->previous=temp->previous;
+      printf("Your contact has been deleted");
+    }
+     else if(temp==head)
+    {
+     temp=temp->next;
+     temp->previous=NULL;
+     head=temp;
+     printf("Your contact has been deleted");
+    }
+    else if(temp->next==NULL)
+    {
+      temp->previous->next=NULL;
+      printf("Your contact has been deleted");
+    }
+     else if(temp==head && temp->next==NULL)
+    {
+      temp=NULL;
+      head=temp;
+      printf("Your contact has been deleted");
+    }
+    else if(flag==2)
+    {
+      printf("The number you entered is not in your contact book");
+    }
+   }
+ 
+
+ return head;
+
+ }
+
+
  
 
 int main()
@@ -182,8 +304,13 @@ int main()
     long long int number;
     char name[20], email[100];
     char delname[20];
+    char username[20];
+     printf("Welcome To Your Contact Book!!!");
+    printf("\nWhat is your name?\n");
+    scanf("%s",username);
+    printf("Hello %s let's start exploring your contact book",username);
     do {
-        printf("\nEnter a choice\n0. exit\n1. add\n2. display\n3. search a contact\n4.Delete by name\n5. clear screen\n");
+        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4.Delete contact\n5. Clear screen\n");
         scanf("%d", &option);
         switch(option){
     case 0:
@@ -205,34 +332,58 @@ int main()
                 
     case 3:
         system("cls");
-        printf("search by \n1.name\n2.email\n3.number\n");
+        printf("search by \n1.Name\n2.Email\n3.Number\n");
         scanf("%d", &option2);
         if(option2 == 1)
         {
-            printf("enter name\n");
+            printf("Enter name\n");
             scanf("%s", &name);
             searchbyName(name);
         }
         else if(option2 == 2){
-            printf("enter email\n");
+            printf("Enter email\n");
             scanf("%s", &email);
             searchbyEmail(email);
         }
         else if(option2 == 3) {
-            printf("enter number\n");
+            printf("Enter number\n");
             scanf("%lli", &number);
             searchbyNumber(number);
         }
         else {
-            printf("pls enter valid option\n");
+            printf("Please enter valid option\n");
         }
         break;
        
+      
+
       case 4:
-      printf("Enter the name to be deleted=");
+      printf("Delete contact by:");
+      printf("Delete by \n1.Name\n2.Email\n3.Number\n");
+      scanf("%d", &option2);
+      if(option2==1)
+      {
+        printf("Enter the name to be deleted=");
       scanf("%s",delname);
-      p=deletebyname(p, delname);
-      break;
+      p=deletebyname(delname);
+      }
+     else if(option2==2)
+      {
+         printf("Enter email id to be deleted=");
+      scanf("%s",email);
+      p=delbyemail(email);
+      }
+      else if(option2==3)
+      {
+      printf("Enter the number to be deleted=");
+      scanf("%lli",&number);
+      p=delbynumber(number);
+      }
+      else {
+            printf("Please enter valid option\n");
+        }
+        break;
+
                 
       case 5:
         system("cls");
@@ -240,7 +391,7 @@ int main()
 
         
     default:
-        printf("enter valid option\n");
+        printf("Enter valid option\n");
 
         }
     }while(option!=0);
