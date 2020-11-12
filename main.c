@@ -130,7 +130,7 @@ void display(struct stack* ptr) {
    int flag=0;
    if(temp==NULL)
    {
-     printf("list is empty");
+     printf("Contact book is empty");
    }
    else{
    
@@ -170,7 +170,7 @@ void display(struct stack* ptr) {
     }
     else if(flag==2)
     {
-      printf("The number you entered is not in the list");
+      printf("The name you entered is not in the list");
     }
 
    }
@@ -288,7 +288,7 @@ void display(struct stack* ptr) {
     }
     else if(flag==2)
     {
-      printf("The number you entered is not in your contact book");
+      printf("The email id you entered is not in the contact book");
     }
    }
  
@@ -302,12 +302,13 @@ void updateByName()
   char name[MAX];
   printf("Enter name of the record which you wish to update: ");
   scanf("%s",name);
+  printf("\n");
 
   struct stack* temp = head;
 
   if(searchbyName(name))
   {
-    printf("Contact Found\n");
+    printf("Contact Found\n\n");
 
     while(temp!=NULL)
     {
@@ -330,12 +331,13 @@ void updateByNumber()
   long long int number;
   printf("Enter number of the record you wish to update: ");
   scanf("%lli",&number);
+  printf("\n");
 
   struct stack* temp = head;
 
   if(searchbyNumber(number))
   {
-    printf("Contact Found\n");
+    printf("Contact Found\n\n");
 
     while(temp!=NULL)
     {
@@ -357,12 +359,13 @@ void updateByEmail()
   char email[MAX];
   printf("Enter email of the record which you wish to update: ");
   scanf("%s",email);
+  printf("\n");
 
   struct stack* temp = head;
 
   if(searchbyEmail(email))
   {
-    printf("Contact Found\n");
+    printf("Contact Found\n\n");
 
     while(temp!=NULL)
     {
@@ -391,10 +394,13 @@ void updateRecord()
   else
   {
     int choice;
-    printf("To Update Contact by Name press 1.\n");
+    printf("------------------------------------------");
+    printf("\nTo Update Contact by Name press 1.\n");
     printf("To Update Contact by Number press 2.\n");
     printf("To Update Contact by Email press 3.\n");
     printf("To Return press 4.\n");
+    printf("------------------------------------------\n");
+    printf("Enter your choice: ");
 
     scanf("%d",&choice);
     
@@ -442,7 +448,7 @@ int main()
     scanf("%s",username);
     printf("Hello %s let's start exploring your contact book",username);
     do {
-        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4.Delete contact\n5. Clear screen\n6. Update record\n");
+        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4. Delete contact\n5. Clear screen\n6. Update record\n");
         scanf("%d", &option);
         switch(option){
     case 0:
@@ -491,7 +497,8 @@ int main()
 
       case 4:
       printf("Delete contact by:");
-      printf("Delete by \n1.Name\n2.Email\n3.Number\n");
+      printf("\n1.Name\n2.Email\n3.Phone Number\n");
+      printf("Enter your choice:");
       scanf("%d", &option2);
       if(option2==1)
       {
@@ -507,7 +514,7 @@ int main()
       }
       else if(option2==3)
       {
-      printf("Enter the number to be deleted=");
+      printf("Enter the phone number to be deleted=");
       scanf("%lli",&number);
       p=delbynumber(number);
       }
