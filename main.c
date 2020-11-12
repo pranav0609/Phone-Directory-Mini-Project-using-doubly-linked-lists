@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
 #define MAX 20
 
 struct stack {
@@ -66,43 +68,46 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
         }
 }
 
-void searchbyName(char name[]) {
+bool searchbyName(char name[]) {
     struct stack* temp = head;
     while(temp!=NULL) {
         int result = strcmp(temp->name, name);
         if(result == 0) {
             printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
-            return;
+            return true;
         }
         temp = temp->next;
     }
     printf("contact not found\n");
+    return false;
 }
 
-void searchbyEmail(char email_id[]) {
+bool searchbyEmail(char email_id[]) {
     struct stack* temp = head;
     while(temp!=NULL) {
         int result = strcmp(temp->email, email_id);
         if(result == 0) {
             printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
-            return;
+            return true;
         }
         temp = temp->next;
     }
     printf("contact not found\n");
+    return false;
 }
 
-void searchbyNumber(long long int ph_number) {
+bool searchbyNumber(long long int ph_number) {
     struct stack* temp = head;
     while(temp!=NULL) {
 
         if(temp->number == ph_number) {
             printf("Number=%lli\nName=%s\nEmail id=%s\n", temp->number, temp->name, temp->email);
-            return;
+            return true;
         }
         temp = temp->next;
     }
     printf("Contact not found\n");
+    return false;
 }
 
 
@@ -292,8 +297,135 @@ void display(struct stack* ptr) {
 
  }
 
+void updateByName()
+{
+  char name[MAX];
+  printf("Enter name of the record which you wish to update: ");
+  scanf("%s",name);
 
- 
+  struct stack* temp = head;
+
+  if(searchbyName(name))
+  {
+    printf("Contact Found\n");
+
+    while(temp!=NULL)
+    {
+      int result = strcmp(temp->name,name);
+      if(result == 0)
+      {
+        printf("Enter New name: ");
+        scanf("%s",name);
+        strcpy(temp->name, name);
+        printf("Update Successful !!!\n");
+        break;
+      }
+      temp = temp->next;
+    }
+  }
+}
+
+void updateByNumber()
+{
+  long long int number;
+  printf("Enter number of the record you wish to update: ");
+  scanf("%lli",&number);
+
+  struct stack* temp = head;
+
+  if(searchbyNumber(number))
+  {
+    printf("Contact Found\n");
+
+    while(temp!=NULL)
+    {
+      if(temp->number == number)
+      {
+        printf("Enter New number: ");
+        scanf("%lli",&number);
+        temp->number = number;
+        printf("Update Successful !!!\n");
+        break;
+      }
+      temp = temp->next;
+    }
+  }
+}
+
+void updateByEmail()
+{
+  char email[MAX];
+  printf("Enter email of the record which you wish to update: ");
+  scanf("%s",email);
+
+  struct stack* temp = head;
+
+  if(searchbyEmail(email))
+  {
+    printf("Contact Found\n");
+
+    while(temp!=NULL)
+    {
+      int result = strcmp(temp->email,email);
+      if(result == 0)
+      {
+        printf("Enter New email: ");
+        scanf("%s",email);
+        strcpy(temp->email, email);
+        printf("Update Successful !!!\n");
+        break;
+      }
+      temp = temp->next;
+    }
+  }
+}
+
+void updateRecord()
+{
+  struct stack* ptr = head;
+
+  if(ptr == NULL)
+  {
+    printf("No records in contact to Update!!!\n");
+  }
+  else
+  {
+    int choice;
+    printf("To Update Contact by Name press 1.\n");
+    printf("To Update Contact by Number press 2.\n");
+    printf("To Update Contact by Email press 3.\n");
+    printf("To Return press 4.\n");
+
+    scanf("%d",&choice);
+    
+    switch(choice)
+    {
+      case 1:
+      {
+        updateByName();
+        break;
+      }
+
+      case 2:
+      {
+        updateByNumber();
+        break;
+      }
+
+      case 3:
+      {
+        updateByEmail();
+        break;
+      }
+
+      case 4:
+      {
+        printf("Exiting the search option!!!\n");
+        break;
+      }
+    }
+  }
+}
 
 int main()
 {
@@ -310,7 +442,7 @@ int main()
     scanf("%s",username);
     printf("Hello %s let's start exploring your contact book",username);
     do {
-        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4.Delete contact\n5. Clear screen\n");
+        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4.Delete contact\n5. Clear screen\n6. Update record\n");
         scanf("%d", &option);
         switch(option){
     case 0:
@@ -318,11 +450,11 @@ int main()
                 
     case 1:
         printf("enter name\n");
-        scanf("%s", &name);
+        scanf("%s", name);
         printf("enter number\n");
         scanf("%lli", &number);
         printf("enter email\n");
-        scanf("%s", &email);
+        scanf("%s", email);
         addtoStack(p, number, name, email);
         break;
                 
@@ -337,12 +469,12 @@ int main()
         if(option2 == 1)
         {
             printf("Enter name\n");
-            scanf("%s", &name);
+            scanf("%s", name);
             searchbyName(name);
         }
         else if(option2 == 2){
             printf("Enter email\n");
-            scanf("%s", &email);
+            scanf("%s", email);
             searchbyEmail(email);
         }
         else if(option2 == 3) {
@@ -388,11 +520,15 @@ int main()
       case 5:
         system("cls");
         break;
-
-        
+      
+      case 6:
+      {
+        updateRecord();
+        break;
+      }
+      
     default:
         printf("Enter valid option\n");
-
         }
     }while(option!=0);
 
