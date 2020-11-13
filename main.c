@@ -3,20 +3,20 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MAX 20
+#define MAX 30
 
-struct stack {
+struct Contact_book {
     long long int number;
     char name[15];
     char email[MAX];
-    struct stack *next;
-    struct stack *previous;
+    struct Contact_book *next;
+    struct Contact_book *previous;
 }*head;
 
-void addtoStack(struct stack* ptr, long long int ph_number, char name[], char email_id[]) {
+void add_to_list(struct Contact_book* ptr, long long int ph_number, char name[], char email_id[]) {
         int flag = 0;
-        struct stack* temp = head;
-        ptr = malloc(sizeof(struct stack));
+        struct Contact_book* temp = head;
+        ptr = malloc(sizeof(struct Contact_book));
         ptr->number = ph_number;
         strcpy(ptr->name, name);
         strcpy(ptr->email, email_id);
@@ -24,23 +24,27 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
 
         if(head == NULL) {
             head = ptr;
+            printf("Contact Added Successfully\n");
+            printf("--------------------------\n");
             return;
         }
 
-        int result1 = strcmp(head->name, ptr->name);
+        int result1 = strcasecmp(head->name, ptr->name);
         if(result1 >= 0) {
             ptr->next = head;
             head->previous = ptr;
             head = ptr;
+            printf("Contact Added Successfully\n");
+            printf("--------------------------\n");
             return;
         }
         if(head->next != NULL) {
             temp = head->next;
             while(temp->next != NULL) {
-                int result = strcmp(temp->name, ptr->name);
+                int result = strcasecmp(temp->name, ptr->name);
 
                 if(result>=0){
-                    struct stack* temp_prev = temp->previous;
+                    struct Contact_book* temp_prev = temp->previous;
                     ptr->next = temp;
                     temp_prev->next = ptr;
                     ptr->previous = temp_prev;
@@ -50,9 +54,9 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
                 }
                 temp = temp->next;
             }
-            int result2 = strcmp(temp->name, ptr->name);
+            int result2 = strcasecmp(temp->name, ptr->name);
             if(result2>=0) {
-                    struct stack* temp_prev1 = temp->previous;
+                    struct Contact_book* temp_prev1 = temp->previous;
                     ptr->next = temp;
                     temp_prev1->next = ptr;
                     ptr->previous = temp_prev1;
@@ -66,14 +70,16 @@ void addtoStack(struct stack* ptr, long long int ph_number, char name[], char em
             temp->next = ptr;
             ptr->previous = temp;
         }
+        printf("\nContact Added Successfully\n");
+        printf("--------------------------\n");
 }
 
 bool searchbyName(char name[]) {
-    struct stack* temp = head;
+    struct Contact_book* temp = head;
     while(temp!=NULL) {
-        int result = strcmp(temp->name, name);
+        int result = strcasecmp(temp->name, name);
         if(result == 0) {
-            printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
+            printf("\nNumber=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
             return true;
         }
         temp = temp->next;
@@ -83,11 +89,11 @@ bool searchbyName(char name[]) {
 }
 
 bool searchbyEmail(char email_id[]) {
-    struct stack* temp = head;
+    struct Contact_book* temp = head;
     while(temp!=NULL) {
-        int result = strcmp(temp->email, email_id);
+        int result = strcasecmp(temp->email, email_id);
         if(result == 0) {
-            printf("Number=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
+            printf("\nNumber=%lli\nName=%s\nEmailid=%s\n", temp->number, temp->name, temp->email);
             return true;
         }
         temp = temp->next;
@@ -97,11 +103,11 @@ bool searchbyEmail(char email_id[]) {
 }
 
 bool searchbyNumber(long long int ph_number) {
-    struct stack* temp = head;
+    struct Contact_book* temp = head;
     while(temp!=NULL) {
 
         if(temp->number == ph_number) {
-            printf("Number=%lli\nName=%s\nEmail id=%s\n", temp->number, temp->name, temp->email);
+            printf("\nNumber=%lli\nName=%s\nEmail id=%s\n", temp->number, temp->name, temp->email);
             return true;
         }
         temp = temp->next;
@@ -111,21 +117,21 @@ bool searchbyNumber(long long int ph_number) {
 }
 
 
-void display(struct stack* ptr) {
-    struct stack* temp = head;
+void display(struct Contact_book* ptr) {
+    struct Contact_book* temp = head;
     if(temp == NULL) {
-        printf("stack empty\n");
+        printf("Oops Contact list is empty :( Press 1 to Add some contacts :)\n");
     }
     else {
         while(temp != NULL) {
-            printf("Name: %s\nNumber: %lli\nemail: %s\n\n\n ",temp->name, temp->number, temp->email);
+            printf("Name: %s\nNumber: %lli\nEmail: %s\n\n\n ",temp->name, temp->number, temp->email);
             temp = temp->next;
         }
     }
 }
- struct stack* deletebyname(char delname[])
+ struct Contact_book* deletebyname(char delname[])
  {
-   struct stack*temp;
+   struct Contact_book*temp;
    temp=head;
    int flag=0;
    if(temp==NULL)
@@ -133,10 +139,10 @@ void display(struct stack* ptr) {
      printf("Contact book is empty");
    }
    else{
-   
+
    while(temp!=NULL)
    {
-    if(strcmp(temp->name,delname)==0)
+    if(strcasecmp(temp->name,delname)==0)
     {
      flag=1;
      break;
@@ -147,14 +153,14 @@ void display(struct stack* ptr) {
     }
     temp=temp->next;
    }
-  
+
 
     if(flag==1 && temp!=head && temp->next!=NULL)
     {
       temp->previous->next=temp->next;
       temp->next->previous=temp->previous;
       printf("Your contact has been deleted");
-      
+
     }
     else if(temp==head)
     {
@@ -177,15 +183,15 @@ void display(struct stack* ptr) {
    return head;
  }
 
-  struct stack*delbynumber(long long int delnumber)
+  struct Contact_book*delbynumber(long long int delnumber)
  {
-   struct stack*temp;
+   struct Contact_book*temp;
    temp=head;
    int flag=0;
    if(temp==NULL)
    {
      printf("Contact book is empty");
-    
+
    }
    else{
    while(temp!=NULL)
@@ -231,26 +237,26 @@ void display(struct stack* ptr) {
       printf("The number you entered is not in the contact book");
     }
    }
- 
+
 
  return head;
 
  }
 
-  struct stack*delbyemail(char delemail[])
+  struct Contact_book*delbyemail(char delemail[])
  {
-   struct stack*temp;
+   struct Contact_book*temp;
    temp=head;
    int flag=0;
    if(temp==NULL)
    {
      printf("Contact book is empty");
-    
+
    }
    else{
    while(temp!=NULL)
    {
-     if(strcmp(temp->email,delemail)==0)
+     if(strcasecmp(temp->email,delemail)==0)
      {
        flag=1;
        break;
@@ -291,7 +297,7 @@ void display(struct stack* ptr) {
       printf("The email id you entered is not in the contact book");
     }
    }
- 
+
 
  return head;
 
@@ -304,7 +310,7 @@ void updateByName()
   scanf("%s",name);
   printf("\n");
 
-  struct stack* temp = head;
+  struct Contact_book* temp = head;
 
   if(searchbyName(name))
   {
@@ -312,7 +318,7 @@ void updateByName()
 
     while(temp!=NULL)
     {
-      int result = strcmp(temp->name,name);
+      int result = strcasecmp(temp->name,name);
       if(result == 0)
       {
         printf("Enter New name: ");
@@ -333,7 +339,7 @@ void updateByNumber()
   scanf("%lli",&number);
   printf("\n");
 
-  struct stack* temp = head;
+  struct Contact_book* temp = head;
 
   if(searchbyNumber(number))
   {
@@ -361,7 +367,7 @@ void updateByEmail()
   scanf("%s",email);
   printf("\n");
 
-  struct stack* temp = head;
+  struct Contact_book* temp = head;
 
   if(searchbyEmail(email))
   {
@@ -369,7 +375,7 @@ void updateByEmail()
 
     while(temp!=NULL)
     {
-      int result = strcmp(temp->email,email);
+      int result = strcasecmp(temp->email,email);
       if(result == 0)
       {
         printf("Enter New email: ");
@@ -385,7 +391,7 @@ void updateByEmail()
 
 void updateRecord()
 {
-  struct stack* ptr = head;
+  struct Contact_book* ptr = head;
 
   if(ptr == NULL)
   {
@@ -403,7 +409,7 @@ void updateRecord()
     printf("Enter your choice: ");
 
     scanf("%d",&choice);
-    
+
     switch(choice)
     {
       case 1:
@@ -435,56 +441,88 @@ void updateRecord()
 
 int main()
 {
-    struct stack s;
-    struct stack *p;
+    struct Contact_book s;
+    struct Contact_book *p;
     p = &s;
     int option, option2;
     long long int number;
     char name[20], email[100];
     char delname[20];
     char username[20];
-     printf("Welcome To Your Contact Book!!!");
+    for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+    for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+
+     printf("Welcome To Your Contact Book!!!\n");
+     for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+    for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
     printf("\nWhat is your name?\n");
     scanf("%s",username);
-    printf("Hello %s let's start exploring your contact book",username);
+    for(int i = 0 ; i < 50 ; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+    for(int i = 0 ; i < 50 ; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+    printf("Hello %s let's start exploring your contact book\n",username);
+    for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
+    printf("\n\n");
+    for(int i  = 0; i < 50; i++) {
+        printf("-");
+    }
+    printf("\n\n");
     do {
-        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4. Delete contact\n5. Clear screen\n6. Update record\n");
+        printf("\nEnter a choice\n0. Exit\n1. Add\n2. Display\n3. Search a contact\n4. Delete contact\n5. Update Contact\n6. Clear screen\n");
         scanf("%d", &option);
         switch(option){
     case 0:
         break;
-                
+
     case 1:
-        printf("enter name\n");
+        printf("Enter Name:\n");
         scanf("%s", name);
-        printf("enter number\n");
+        printf("Enter Number:\n");
         scanf("%lli", &number);
-        printf("enter email\n");
+        printf("Enter Email\n");
         scanf("%s", email);
-        addtoStack(p, number, name, email);
+        add_to_list(p, number, name, email);
         break;
-                
+
     case 2:
         display(p);
         break;
-                
+
     case 3:
-        system("cls");
-        printf("search by \n1.Name\n2.Email\n3.Number\n");
+        
+        printf("search by \n1. Name\n2. Email\n3. Number\n");
         scanf("%d", &option2);
         if(option2 == 1)
         {
-            printf("Enter name\n");
+            printf("Enter Name\n");
             scanf("%s", name);
             searchbyName(name);
         }
         else if(option2 == 2){
-            printf("Enter email\n");
+            printf("Enter Email\n");
             scanf("%s", email);
             searchbyEmail(email);
         }
         else if(option2 == 3) {
-            printf("Enter number\n");
+            printf("Enter Eumber\n");
             scanf("%lli", &number);
             searchbyNumber(number);
         }
@@ -492,23 +530,23 @@ int main()
             printf("Please enter valid option\n");
         }
         break;
-       
-      
+
+
 
       case 4:
       printf("Delete contact by:");
-      printf("\n1.Name\n2.Email\n3.Phone Number\n");
+      printf("\n1. Name\n2. Email\n3. Phone Number\n");
       printf("Enter your choice:");
       scanf("%d", &option2);
       if(option2==1)
       {
-        printf("Enter the name to be deleted=");
+        printf("Enter the name to be deleted = ");
       scanf("%s",delname);
       p=deletebyname(delname);
       }
      else if(option2==2)
       {
-         printf("Enter email id to be deleted=");
+         printf("Enter email id to be deleted = ");
       scanf("%s",email);
       p=delbyemail(email);
       }
@@ -523,17 +561,17 @@ int main()
         }
         break;
 
-                
+
       case 5:
-        system("cls");
-        break;
-      
-      case 6:
-      {
         updateRecord();
         break;
+
+      case 6:
+      {
+        system("cls");
+        break;
       }
-      
+
     default:
         printf("Enter valid option\n");
         }
